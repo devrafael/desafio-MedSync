@@ -23,14 +23,22 @@ public interface AppointmentRepository extends JpaRepository<AppointmentModel, U
     List<AppointmentModel> findByCompletedAndPatient(
             @Param("completed") boolean completed,
             @Param("patient") String patient);
-
-    @Query(
-            """
-            SELECT a
-            FROM AppointmentModel a
-            WHERE TRIM(LOWER(a.appointmentDateTime.doctor)) = TRIM(LOWER(:doctor))
-            """
-    )
+//
+//    @Query(
+//            """
+//            SELECT a
+//            FROM AppointmentModel a
+//            WHERE TRIM(LOWER(a.appointmentDateTime.doctor)) = TRIM(LOWER(:doctor))
+//            """
+//    )
+@Query(
+        """
+        SELECT a
+        FROM AppointmentModel a
+        WHERE TRIM(LOWER(a.appointmentDateTime.doctor)) = TRIM(LOWER(:doctor))
+        ORDER BY a.appointmentDateTime.date ASC, a.appointmentDateTime.time ASC
+        """
+)
     List<AppointmentModel> findByAppointmentsByDoctor(@Param("doctor") String doctor);
 
 }

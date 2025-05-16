@@ -61,7 +61,7 @@ public class AppointmentModel {
     public void setPatient(String patient) {
         this.patient = patient;
     }
-//
+
     public void setAppointmentCompleted(Boolean appointmentCompleted) {
         this.appointmentCompleted = appointmentCompleted;
     }

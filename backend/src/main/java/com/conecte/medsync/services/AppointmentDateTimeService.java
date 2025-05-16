@@ -64,6 +64,13 @@ public class AppointmentDateTimeService {
                 .collect(Collectors.toSet());
     }
 
+    public AppointmentDateTimeResponse getSchedule(UUID appointmentDateTimeId){
+
+        return appointmentDateTimeMapper.convertToResponse(appointmentDateTimeRepository
+                .findById(appointmentDateTimeId)
+                .orElseThrow(() -> new DateTimeRegistredException("Schedule with the specified ID was not found. ID: " + appointmentDateTimeId)));
+    }
+
     public void updateAppointmentDateTime(AppointmentDateTimeRequest appointmentDateTimeRequest, UUID appointmentAvailabilityId) {
         AppointmentDateTimeModel appointmentRegistred = appointmentDateTimeRepository
                 .findById(appointmentAvailabilityId)
