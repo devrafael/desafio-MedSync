@@ -13,11 +13,11 @@ import org.mapstruct.ReportingPolicy;
         uses = AppointmentDateTimeMapper.class)
 public interface AppointmentMapper {
 
-    @Mapping(target = "appointmentId", ignore = true)
-    @Mapping(target = "requestAt", ignore = true)
-    @Mapping(source = "appointmentDateTimeRequest", target = "appointmentDateTime")
-    @Mapping(target = "appointmentCompleted", ignore = true)
-    AppointmentModel convertToModel(AppointmentRequest appointmentRequest);
+//    @Mapping(target = "appointmentId", ignore = true)
+//    @Mapping(target = "requestAt", ignore = true)
+//    @Mapping(source = "appointmentDateTimeRequest", target = "appointmentDateTime")
+//    @Mapping(target = "appointmentCompleted", ignore = true)
+//    AppointmentModel convertToModel(AppointmentRequest appointmentRequest);
 
     @Mapping(target = "appointmentId", source = "appointmentId")
     @Mapping(target = "requestAt", source = "requestAt")

@@ -94,6 +94,11 @@ public class AppointmentDateTimeService {
 
     }
 
+    public AppointmentDateTimeModel getAppointmentDateTimeById(UUID appointmentDateTimeId){
+        return appointmentDateTimeRepository.findById(appointmentDateTimeId).orElseThrow(() ->
+                new DateTimeRegistredException("Schedule with the specified ID was not found. ID: " + appointmentDateTimeId));
+    }
+
 
 
 

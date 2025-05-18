@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/schedule")
+@PreAuthorize("hasRole('DOCTOR')")
 @Tag(name = "AppointmentDateTimeController",
         description = "Controller para gerenciamento dos horários disponibilizados pelo médico")
 public class AppointmentDateTimeController {
@@ -40,6 +42,7 @@ public class AppointmentDateTimeController {
         return ResponseEntity.created(uri).build();
     }
     @GetMapping
+    @PreAuthorize("hasAnyRole('DOCTOR', 'PATIENT')")
     @Operation(summary = "Retorna uma lista de horários", description = "Lista de horários disponibilizados por um médico")
     @ApiResponse(responseCode = "200", description = "Busca realizada!")
     public ResponseEntity<Set<AppointmentDateTimeResponse>> getAllAppointmentDateTime(
@@ -59,12 +62,22 @@ public class AppointmentDateTimeController {
 
     @PutMapping("/{appointmentDateTimeId}")
     @Operation(summary = "Atualiza um horário", description = "Atualiza um ou mais campos de um horário pré registrado")
-    @ApiResponse(responseCode = "200", description = "Atualização realizada!")
+    @ApiResponse(responseCode = "204", description = "Atualização realizada!")
     public ResponseEntity<Void> updateAppointment(
             @RequestBody AppointmentDateTimeRequest appointmentDateTimeRequest,
             @PathVariable UUID appointmentDateTimeId) {
 
         appointmentDateTimeService.updateAppointmentDateTime(appointmentDateTimeRequest, appointmentDateTimeId);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{appointmentDateTimeId}")
+    @Operation(summary = "Deletar um horário", description = "Realiza a remoção de um horário")
+    @ApiResponse(responseCode = "204", description = "Remoção realizada!")
+    public ResponseEntity<Void> deleteAppointmentDateTime(
+            @PathVariable UUID appointmentDateTimeId) {
+        appointmentDateTimeService.deleteAppointmentDateTime(appointmentDateTimeId);
 
         return ResponseEntity.noContent().build();
     }

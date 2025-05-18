@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/appointment")
@@ -59,7 +60,15 @@ public class AppointmentController {
             String patient){
         List<AppointmentResponse> listAppointmentsByStatus = appointmentService.getAllAppointmentsByStatus(status, patient);
         return ResponseEntity.ok(listAppointmentsByStatus);
+    }
 
+    @PatchMapping("/{appointmentId}")
+    @Operation(summary = "Finalizar consulta", description = "Médico registra a finalização da consulta com o paciente")
+    @ApiResponse(responseCode = "204", description = "Busca com sucesso!")
+    public ResponseEntity<AppointmentResponse> getAllAppointmentsByStatus(
+            @PathVariable UUID appointmentId){
+        appointmentService.finishAppointment(appointmentId);
+        return ResponseEntity.noContent().build();
     }
 
 

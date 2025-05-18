@@ -2,6 +2,7 @@ package com.conecte.medsync.services;
 
 import com.conecte.medsync.dtos.requests.AppointmentRequest;
 import com.conecte.medsync.dtos.responses.AppointmentResponse;
+import com.conecte.medsync.exceptions.AppointmentException;
 import com.conecte.medsync.mappers.AppointmentMapper;
 import com.conecte.medsync.models.AppointmentDateTimeModel;
 import com.conecte.medsync.models.AppointmentModel;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,6 +63,13 @@ public class AppointmentService {
         return appointmentResponseListByStatus.stream()
                 .map(appointmentMapper::convertToResponse)
                 .collect(Collectors.toList());
+    }
+
+    public void finishAppointment(UUID appointmentId) {
+        AppointmentModel appointmentRegistred = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentException("Appointment not found"));
+        appointmentRegistred.setAppointmentCompleted(true);
+        appointmentRepository.save(appointmentRegistred);
     }
 
 

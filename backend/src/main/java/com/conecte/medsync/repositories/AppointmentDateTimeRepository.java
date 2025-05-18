@@ -33,7 +33,7 @@ public interface AppointmentDateTimeRepository extends JpaRepository<Appointment
     SELECT a 
     FROM AppointmentDateTimeModel a 
     WHERE TRIM(LOWER(a.doctor)) = TRIM(LOWER(:doctor))
-    ORDER BY a.date ASC
+    ORDER BY a.date ASC, a.time ASC
 
 """)
     List<AppointmentDateTimeModel> findDateTimeByDoctor(@Param("doctor") String doctor);
