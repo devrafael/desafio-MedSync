@@ -49,7 +49,7 @@ public class AppointmentDateTimeService {
         Optional<AppointmentDateTimeModel> appointmentDateTimeModelRegistred = appointmentDateTimeRepository.findByDateTimeAndDoctor(
                 appointmentDateTime.getDate(),
                 appointmentDateTime.getTime(),
-                appointmentDateTime.getDoctor()
+                appointmentDateTime.getDoctor().getEmail()
         );
 
         if(appointmentDateTimeModelRegistred.isPresent()) {
@@ -57,12 +57,13 @@ public class AppointmentDateTimeService {
         }
     }
 
-    public Set<AppointmentDateTimeResponse> getAllAppointmentDateTime(String doctor){
-        List<AppointmentDateTimeModel> appointmentsDateTime = appointmentDateTimeRepository.findDateTimeByDoctor(doctor);
+    public Set<AppointmentDateTimeResponse> getAllAppointmentDateTime(String doctorId){
+        List<AppointmentDateTimeModel> appointmentsDateTime = appointmentDateTimeRepository.findDateTimeByDoctorId(doctorId);
         return appointmentsDateTime.stream()
                 .map(appointmentDateTimeMapper::convertToResponse)
                 .collect(Collectors.toSet());
     }
+
 
     public AppointmentDateTimeResponse getSchedule(UUID appointmentDateTimeId){
 

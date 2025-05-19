@@ -34,7 +34,6 @@ public class AuthenticationService {
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
 
         return new LoginResponse(token);
-
     }
 
     public UserModel Register(RegisterRequest registerRequest) {

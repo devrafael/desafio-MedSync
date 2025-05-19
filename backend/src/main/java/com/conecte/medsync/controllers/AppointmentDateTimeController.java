@@ -51,8 +51,9 @@ public class AppointmentDateTimeController {
         return ResponseEntity.ok(appointmentDateTimeResponses);
     }
 
+
     @GetMapping("/{appointmentDateTimeId}")
-    @Operation(summary = "Retorna uma um horário", description = "Horário disponibilizado por um médico")
+    @Operation(summary = "Retorna um horário", description = "Horário disponibilizado por um médico")
     @ApiResponse(responseCode = "200", description = "Busca realizada!")
     public ResponseEntity<AppointmentDateTimeResponse> getAppointmentDateTimeById(
             @PathVariable UUID appointmentDateTimeId) {

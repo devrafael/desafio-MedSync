@@ -8,7 +8,7 @@ public record AppointmentDateTimeResponse(
         UUID appointmentDateTimeId,
         LocalDate date,
         LocalTime time,
-        String doctor,
+        UserResponse doctor,
         Boolean aviability
 ) {
 }

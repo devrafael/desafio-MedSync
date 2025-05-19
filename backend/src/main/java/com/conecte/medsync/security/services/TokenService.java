@@ -35,6 +35,7 @@ public class TokenService {
                     .withIssuer("medSync")
                     .withSubject(user.getEmail())
                     .withClaim("fullName", user.getFullName())
+                    .withClaim("userId", user.getUserId())
                     .withClaim("roles", roles)
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);

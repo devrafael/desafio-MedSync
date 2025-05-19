@@ -1,17 +1,18 @@
 package com.conecte.medsync.controllers;
 
 import com.conecte.medsync.dtos.requests.AppointmentRequest;
+import com.conecte.medsync.dtos.responses.AppointmentDateTimeResponse;
 import com.conecte.medsync.dtos.responses.AppointmentResponse;
 import com.conecte.medsync.services.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,7 +40,6 @@ public class AppointmentController {
         return ResponseEntity.created(uri).build();
     }
 
-    //Pendencia: Adicionar parametro para receber o identificador do médico e filtrar a lista
     @GetMapping()
     @Operation(summary = "Lista de consultas agendadas", description = "Médico visualiza sua agenda de consultas")
     @ApiResponse(responseCode = "200", description = "Busca com sucesso!")
@@ -50,16 +50,14 @@ public class AppointmentController {
         return ResponseEntity.ok(appointments);
     }
 
-    @GetMapping("/patient")
-    @Operation(summary = "Lista de consultas do paciente", description = "Paciente visualiza suas consultas (futuras e passadas)")
-    @ApiResponse(responseCode = "200", description = "Busca com sucesso!")
-    public ResponseEntity<List<AppointmentResponse>> getAllAppointmentsByStatus(
-            @RequestParam
-            Boolean status,
-            @RequestParam
-            String patient){
-        List<AppointmentResponse> listAppointmentsByStatus = appointmentService.getAllAppointmentsByStatus(status, patient);
-        return ResponseEntity.ok(listAppointmentsByStatus);
+    @GetMapping("/{patient}")
+    @PreAuthorize("hasRole('PATIENT')")
+    @Operation(summary = "Retorna de consultas marcadas", description = "Lista de consultas marcadas de um paciente")
+    @ApiResponse(responseCode = "200", description = "Busca realizada!")
+    public ResponseEntity<Set<AppointmentResponse>> getAllPatientAppointments(
+            @PathVariable String patient) {
+        Set<AppointmentResponse> appointmentDateTimeResponses = appointmentService.getAllPatientAppointments(patient);
+        return ResponseEntity.ok(appointmentDateTimeResponses);
     }
 
     @PatchMapping("/{appointmentId}")

@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users_tb")
+
 public class UserModel implements UserDetails {
 
     @Id
@@ -64,8 +66,13 @@ public class UserModel implements UserDetails {
         return true;
     }
 
+
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

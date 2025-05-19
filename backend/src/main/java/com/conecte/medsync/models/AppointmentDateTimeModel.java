@@ -1,9 +1,7 @@
 package com.conecte.medsync.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.conecte.medsync.models.user.UserModel;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Setter;
 
@@ -20,10 +18,12 @@ public class AppointmentDateTimeModel {
     private UUID appointmentDateTimeId;
     private LocalDate date;
     private LocalTime time;
-    private String doctor; //apenas representacao (temporario)
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "userId")
+    private UserModel doctor;
     private Boolean aviability;
 
-    public AppointmentDateTimeModel(LocalDate date, LocalTime time, String doctor) {
+    public AppointmentDateTimeModel(LocalDate date, LocalTime time, UserModel doctor) {
         this.date = date;
         this.time = time;
         this.doctor = doctor;
@@ -43,7 +43,7 @@ public class AppointmentDateTimeModel {
         return time;
     }
 
-    public String getDoctor() {
+    public UserModel getDoctor() {
         return doctor;
     }
 
@@ -59,7 +59,7 @@ public class AppointmentDateTimeModel {
         this.time = time;
     }
 
-    public void setDoctor(String doctor) {
+    public void setDoctor(UserModel doctor) {
         this.doctor = doctor;
     }
 

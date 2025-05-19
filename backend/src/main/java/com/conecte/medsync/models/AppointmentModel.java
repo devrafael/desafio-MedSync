@@ -1,5 +1,6 @@
 package com.conecte.medsync.models;
 
+import com.conecte.medsync.models.user.UserModel;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,12 +20,14 @@ public class AppointmentModel {
     @JoinColumn(name = "appointment_datetime_id", referencedColumnName = "appointmentDateTimeId")
     private AppointmentDateTimeModel appointmentDateTime;
     private LocalDateTime requestAt;
-    private String patient;
+    @ManyToOne
+    @JoinColumn(name = "patient_user_id")
+    private UserModel patient;
     private Boolean appointmentCompleted;
     
     public AppointmentModel(){}
 
-    public AppointmentModel(AppointmentDateTimeModel appointmentDateTime, String patient) {
+    public AppointmentModel(AppointmentDateTimeModel appointmentDateTime, UserModel patient) {
         this.appointmentDateTime = appointmentDateTime;
         this.requestAt = LocalDateTime.now();
         this.patient = patient;
@@ -42,7 +45,7 @@ public class AppointmentModel {
         return requestAt;
     }
 
-    public String getPatient() {
+    public UserModel getPatient() {
         return patient;
     }
 
@@ -58,7 +61,7 @@ public class AppointmentModel {
         this.requestAt = requestAt;
     }
 
-    public void setPatient(String patient) {
+    public void setPatient(UserModel patient) {
         this.patient = patient;
     }
 

@@ -1,11 +1,13 @@
 package com.conecte.medsync.services;
 
 import com.conecte.medsync.dtos.requests.AppointmentRequest;
+import com.conecte.medsync.dtos.responses.AppointmentDateTimeResponse;
 import com.conecte.medsync.dtos.responses.AppointmentResponse;
 import com.conecte.medsync.exceptions.AppointmentException;
 import com.conecte.medsync.mappers.AppointmentMapper;
 import com.conecte.medsync.models.AppointmentDateTimeModel;
 import com.conecte.medsync.models.AppointmentModel;
+import com.conecte.medsync.models.user.UserModel;
 import com.conecte.medsync.repositories.AppointmentRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,13 +24,16 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AppointmentDateTimeService appointmentDateTimeService;
     private final AppointmentMapper appointmentMapper;
+    private final UserService userService;
 
     public AppointmentService(AppointmentRepository appointmentRepository,
                               AppointmentDateTimeService appointmentDateTimeService,
-                              AppointmentMapper appointmentMapper) {
+                              AppointmentMapper appointmentMapper,
+                              UserService userService) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentDateTimeService = appointmentDateTimeService;
         this.appointmentMapper = appointmentMapper;
+        this.userService = userService;
     }
 
     public AppointmentResponse createAppointment(AppointmentRequest appointmentRequest) {
@@ -38,8 +43,8 @@ public class AppointmentService {
                 LocalTime.parse(appointmentRequest.appointmentDateTimeRequest().time()),
                 appointmentRequest.appointmentDateTimeRequest().doctor()
                 );
-
-        AppointmentModel newAppointment = new AppointmentModel(appointmentDateTimeModel, appointmentRequest.patient());
+        UserModel patientRegistred = userService.getUserByUserId(appointmentRequest.patient());
+        AppointmentModel newAppointment = new AppointmentModel(appointmentDateTimeModel, patientRegistred);
         newAppointment.setAppointmentCompleted(false);
 
         appointmentDateTimeService.isScheduleUnavailable(appointmentDateTimeModel);
@@ -51,6 +56,13 @@ public class AppointmentService {
 
     public Set<AppointmentResponse> getAllAppointments(String doctor) {
         List<AppointmentModel> appointments = appointmentRepository.findByAppointmentsByDoctor(doctor);
+        return appointments.stream()
+                .map(appointmentMapper::convertToResponse)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<AppointmentResponse> getAllPatientAppointments(String patient){
+        List<AppointmentModel> appointments = appointmentRepository.findByPatientUserId(patient);
         return appointments.stream()
                 .map(appointmentMapper::convertToResponse)
                 .collect(Collectors.toSet());
