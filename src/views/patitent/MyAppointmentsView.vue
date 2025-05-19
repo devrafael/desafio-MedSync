@@ -11,16 +11,20 @@
 import TablePatientComponent from "@/components/patient/TablePatientComponent.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import {jwtDecode} from "jwt-decode";
+
+
+const token = localStorage.getItem('token')
+const decoded = jwtDecode(token);
 
 const urlBase = process.env.VUE_APP_URL_BASE;
-const endpoint = "appointment?doctor=";
-const doctorName = "dr. rafael almeida";
+const endpoint = "appointment";
+const patientId = decoded.userId
 const listAppointments = ref([]);
 
 onMounted(async () => {
- 
   try {
-    const response = await axios.get(`${urlBase}/${endpoint}${encodeURIComponent(doctorName)}`);
+    const response = await axios.get(`${urlBase}/${endpoint}/${patientId}`);
     const formatDateForVisualization = (isoDateString) => {
       const [year, month, day] = isoDateString.split("T")[0].split("-");
       return `${day}/${month}/${year}`;
@@ -40,7 +44,7 @@ onMounted(async () => {
       return [
         formattedAppointmentDate,
         formattedRequestTime,
-        item.appointmentDateTime.doctor,
+        item.appointmentDateTime.doctor.fullName,
         formattedRequestDate,
         item.appointmentCompleted ? "Finalizada" : "Agendada"
       ];

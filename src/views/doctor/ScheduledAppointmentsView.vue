@@ -4,6 +4,7 @@
     :tbody="listAppointments"
     title="Consultas Agendadas"
     :routeLink="'/main/doctor'"
+    @finish-item="handleFinish"
   ></TableComponent>
 </template>
 
@@ -11,16 +12,27 @@
 import TableComponent from "@/components/doctor/TableDoctorComponent.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import {jwtDecode} from "jwt-decode";
+
+
+const token = localStorage.getItem('token')
+const decoded = jwtDecode(token);
 
 const urlBase = process.env.VUE_APP_URL_BASE;
 const endpoint = "appointment?doctor=";
-const doctorName = "dr. rafael almeida";
+const doctorId = decoded.userId;
+
 const listAppointments = ref([]);
+const originalAppointments = ref([]);
 
 onMounted(async () => {
  
   try {
-    const response = await axios.get(`${urlBase}/${endpoint}${encodeURIComponent(doctorName)}`);
+    const response = await axios.get(`${urlBase}/${endpoint}${doctorId}`);
+    const allAppointments = response.data;
+    const filtered = allAppointments.filter(item => item.appointmentCompleted === false);
+    originalAppointments.value = filtered;
+
     const formatDateForVisualization = (isoDateString) => {
       const [year, month, day] = isoDateString.split("T")[0].split("-");
       return `${day}/${month}/${year}`;
@@ -31,24 +43,36 @@ onMounted(async () => {
       return `${hour}:${minutes}`;
     };
 
-    listAppointments.value = response.data.map(item => {
-      const formattedAppointmentDate = formatDateForVisualization(item.appointmentDateTime.date);
-      const formattedRequestDate = formatDateForVisualization(item.requestAt);
-      const formattedRequestTime = formatTimeForVisualization(item.appointmentDateTime.time);
-
+    listAppointments.value = filtered.map(item => {
       return [
-        formattedAppointmentDate,
-        formattedRequestTime,
+      formatDateForVisualization(item.appointmentDateTime.date),
+      formatTimeForVisualization(item.appointmentDateTime.time),
         item.patient,
-        formattedRequestDate,
+        formatDateForVisualization(item.requestAt),
         'Finalizar'
       ];
     });
+
   } catch (error) {
     alert("Erro ao buscar horários:", error);
   }
 });
 
+async function handleFinish(index) {
+  const item = originalAppointments.value[index];
+  const appointmentId = item.appointmentId;
 
+  if (confirm("Deseja realmente finalizar esta consulta?")) {
+    try {
+      await axios.patch(`${urlBase}/appointment/${appointmentId}`);
+      alert("Consulta finalizada com sucesso!");
+
+      listAppointments.value.splice(index, 1);
+      originalAppointments.value.splice(index, 1);
+    } catch (error) {
+      alert("Erro ao finalizar consulta.");
+    }
+  }
+}
 
 </script>

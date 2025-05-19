@@ -29,7 +29,6 @@
 
       </div>
 
-      <!-- Tabela -->
       <table class="table table-hover">
         <thead>
           <tr>

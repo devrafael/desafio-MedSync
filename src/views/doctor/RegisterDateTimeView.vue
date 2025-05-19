@@ -4,7 +4,7 @@
 
     <div class="mb-3">
       <label class="form-label">Data</label>
-      <input type="date" class="form-control" v-model="date"/>
+      <input type="date" class="form-control" v-model="date" :min="formattedToday"/>
     </div>
 
     <div class="mb-3">
@@ -25,28 +25,39 @@
 import BackButtonComponent from '../../components/BackButtonComponent.vue';
 import axios from "axios";
 import { ref } from "vue";
+import { format } from 'date-fns';
+import {jwtDecode} from "jwt-decode";
+
+
+const token = localStorage.getItem('token')
+const decoded = jwtDecode(token);
 
 const urlBase = process.env.VUE_APP_URL_BASE;
 const endpoint = "schedule/new";
-const doctorName = "dr. rafael almeida";
+const doctorId = decoded.userId;
+
 const date = ref('');
 const time = ref('');
+
+
 
 const submitSchedule = async () => {
   try {
     const payload = {
-      doctor: doctorName,
+      doctor: doctorId,
       date: date.value,
       time: time.value
     };
-    
     const response = await axios.post(`${urlBase}/${endpoint}`, payload);
-    console.log('Resposta do servidor:', response.data);
     alert('Horário cadastrado com sucesso!');
   } catch (error) {
     alert('Erro ao cadastrar horário!');
   }
 };
+
+const today = new Date();
+const formattedToday = format(today, 'yyyy-MM-dd');
+
 </script>
 
 

@@ -1,14 +1,20 @@
-
 <template>
   <form @submit.prevent="submitAppointment">
     <h2>AGENDAR CONSULTA</h2>
 
     <div class="mb-3">
       <label class="form-label">Médico</label>
-      <select class="form-select" v-model="selectedDoctor" @change="fetchSchedule">
-        <option value="">Selecione um médico</option>
-        <option v-for="doctor in doctors" :key="doctor" :value="doctor">
-          {{ doctor }}
+      <select
+        class="form-select"
+        v-model="selectedDoctor"
+        @change="fetchSchedule"
+      >
+        <option
+          v-for="doctor in doctorsOnly"
+          :key="doctor.userId"
+          :value="doctor.userId"
+        >
+          {{ doctor.fullName }}
         </option>
       </select>
     </div>
@@ -37,11 +43,6 @@
       </select>
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">Paciente</label>
-      <input type="text" class="form-control" v-model="patientName" />
-    </div>
-
     <div class="btn-container mt-4">
       <BackButtonComponent :routeLink="'/main/patient'" />
       <button type="submit" class="btn btn-primary ms-2">
@@ -51,41 +52,57 @@
   </form>
 </template>
 
-
 <script setup>
 import BackButtonComponent from "../../components/BackButtonComponent.vue";
 import axios from "axios";
 import { ref, computed } from "vue";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import {jwtDecode} from "jwt-decode";
+
+
+const token = localStorage.getItem('token')
+const decoded = jwtDecode(token);
 
 const router = useRouter();
 
-
 const urlBase = process.env.VUE_APP_URL_BASE;
 const appointmentEndpoint = "appointment/new";
-const doctors = ref([
-  "Dr. Rafael Almeida",
-  "Dra. Carla Souza",
-  "Dr. João Silva"
-]);
+const users = ref([]);
 
-const selectedDoctor = ref('');
-const selectedDate = ref('');
-const selectedTime = ref('');
-const patientName = ref("");
+const selectedDoctor = ref("");
+const selectedDate = ref("");
+const selectedTime = ref("");
 const listSchedule = ref([]);
+
+const doctorsOnly = computed(() =>
+  users.value.filter((d) => d.role === "DOCTOR")
+);
+
+const fetchDoctors = async () => {
+  try {
+    const response = await axios.get("http://localhost:8080/users");
+    users.value = response.data;
+  } catch (error) {
+    alert("Erro ao buscar os médicos!");
+  }
+};
+
+onMounted(() => {
+  fetchDoctors();
+});
 
 const availableDates = computed(() => {
   const dates = listSchedule.value
-    .filter(item => item.aviability) 
-    .map(item => item.date);
+    .filter((item) => item.aviability)
+    .map((item) => item.date);
   return [...new Set(dates)];
 });
 
 const getAvailableTimesForDate = (date) => {
   return listSchedule.value
-    .filter(item => item.aviability && item.date === date) 
-    .map(item => item.time);
+    .filter((item) => item.aviability && item.date === date)
+    .map((item) => item.time);
 };
 
 const formatDate = (isoDate) => {
@@ -94,18 +111,21 @@ const formatDate = (isoDate) => {
 };
 
 const formatTime = (time) => {
-  return time.slice(0, 5); 
+  return time.slice(0, 5);
 };
 
 const fetchSchedule = async () => {
   if (!selectedDoctor.value) return;
 
   try {
-    const response = await axios.get(`${urlBase}/schedule?doctor=${encodeURIComponent(selectedDoctor.value)}`);
+    const response = await axios.get(
+      `${urlBase}/schedule?doctor=${encodeURIComponent(selectedDoctor.value)}`
+    );
     listSchedule.value = response.data;
 
-    selectedDate.value = '';
-    selectedTime.value = '';
+
+    selectedDate.value = "";
+    selectedTime.value = "";
   } catch (error) {
     console.error("Erro ao buscar horários:", error);
   }
@@ -121,14 +141,14 @@ const submitAppointment = async () => {
       appointmentDateTimeRequest: {
         date: selectedDate.value,
         time: selectedTime.value,
-        doctor: selectedDoctor.value
+        doctor: selectedDoctor.value,
       },
-      patient: patientName.value
+      patient: decoded.userId,
     };
 
     await axios.post(`${urlBase}/${appointmentEndpoint}`, payload);
     alert("Consulta agendada com sucesso!");
-    router.push('/main/patient');
+    router.push("/main/patient");
   } catch (error) {
     console.error("Erro ao agendar consulta:", error);
     alert("Erro ao agendar consulta!");
@@ -143,13 +163,14 @@ h2 {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-input, select {
+input,
+select {
   margin-bottom: 20px;
   padding: 10px;
   font-size: 16px;
 }
 
-label{
+label {
   display: flex;
 }
 
@@ -174,7 +195,8 @@ form {
   flex-wrap: wrap;
 }
 
-a, button {
+a,
+button {
   border: none;
   color: white;
   background-color: var(--secondary);
