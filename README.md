@@ -80,7 +80,7 @@ Observação: Caso queira realizar login simultâneo (Médico e Paciente), utili
 
 ### 📝 Cadastro de usuário
 
-Apesar do sistema já possuir 2 usuários cadastrados (1 médico e 1 paciente), é possível realizar o cadastro no sistema. 
+Apesar do sistema já possuir 2 usuários cadastrados (1 médico e 1 paciente), é possível realizar o cadastro de um novo usuário. 
 
 
 ## 🔍 Endpoints
