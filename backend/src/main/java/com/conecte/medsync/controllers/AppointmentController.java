@@ -30,6 +30,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/new")
+    @PreAuthorize("hasRole('PATIENT')")
     @Operation(summary = "Cria uma consulta", description = "Paciente realiza o agendamento de uma consulta médica")
     @ApiResponse(responseCode = "201", description = "Consulta agendada com sucesso!")
     public ResponseEntity<Void> createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
@@ -45,6 +46,7 @@ public class AppointmentController {
     @GetMapping()
     @Operation(summary = "Lista de consultas agendadas", description = "Médico visualiza sua agenda de consultas")
     @ApiResponse(responseCode = "200", description = "Busca com sucesso!")
+    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<Set<AppointmentResponse>> getAllAppointments(
             @RequestParam String doctor
     ) {
@@ -54,7 +56,7 @@ public class AppointmentController {
 
     @GetMapping("/{patient}")
     @PreAuthorize("hasRole('PATIENT')")
-    @Operation(summary = "Retorna de consultas marcadas", description = "Lista de consultas marcadas de um paciente")
+    @Operation(summary = "Retorno de consultas marcadas", description = "Lista de consultas marcadas de um paciente")
     @ApiResponse(responseCode = "200", description = "Busca realizada!")
     public ResponseEntity<Set<AppointmentResponse>> getAllPatientAppointments(
             @PathVariable String patient) {
@@ -63,6 +65,7 @@ public class AppointmentController {
     }
 
     @PatchMapping("/{appointmentId}")
+    @PreAuthorize("hasRole('DOCTOR')")
     @Operation(summary = "Finalizar consulta", description = "Médico registra a finalização da consulta com o paciente")
     @ApiResponse(responseCode = "204", description = "Busca com sucesso!")
     public ResponseEntity<AppointmentResponse> getAllAppointmentsByStatus(

@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "mainDoctor" */ "../views/doctor/DoctorMainView.vue"
       ),
-    meta: { requiresAuth: true, role: "DOCTOR" },
+    meta: { requiresAuth: true, role: "ROLE_DOCTOR" },
   },
   {
     path: "/schedule",
@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "schedule" */ "../views/doctor/RegisterDateTimeView.vue"
       ),
-    meta: { requiresAuth: true, role: "DOCTOR" },
+    meta: { requiresAuth: true, role: "ROLE_DOCTOR" },
   },
   {
     path: "/listSchedule",
@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "listSchedule" */ "../views/doctor/ListDateTimeView.vue"
       ),
-    meta: { requiresAuth: true, role: "DOCTOR" },
+    meta: { requiresAuth: true, role: "ROLE_DOCTOR" },
   },
   {
     path: "/appointments",
@@ -61,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "appointments" */ "../views/doctor/ScheduledAppointmentsView.vue"
       ),
-    meta: { requiresAuth: true, role: "DOCTOR" },
+    meta: { requiresAuth: true, role: "ROLE_DOCTOR" },
   },
   {
     path: "/main/patient",
@@ -70,25 +70,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "/main/patient" */ "../views/patitent/PatitentMainView.vue"
       ),
-    meta: { requiresAuth: true, role: "PATIENT" },
-  },
-  {
-    path: "/my-appointments",
-    name: "my-appointments",
-    component: () =>
-      import(
-        /* webpackChunkName: "my-appointments" */ "../views/patitent/MyAppointmentsView.vue"
-      ),
-    meta: { requiresAuth: true, role: "PATIENT" },
-  },
-  {
-    path: "/new-appointments",
-    name: "new-appointments",
-    component: () =>
-      import(
-        /* webpackChunkName: "new-appointments" */ "../views/patitent/NewAppointmentView.vue"
-      ),
-    meta: { requiresAuth: true, role: "PATIENT" },
+    meta: { requiresAuth: true, role: "ROLE_PATIENT" },
   },
   {
     path: "/edit/:id",
@@ -98,7 +80,25 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "/edit" */ "../views/doctor/UpdateDateTimeView.vue"
       ),
-    meta: { requiresAuth: true, role: "DOCTOR" },
+    meta: { requiresAuth: true, role: "ROLE_DOCTOR" },
+  },
+  {
+    path: "/my-appointments",
+    name: "my-appointments",
+    component: () =>
+      import(
+        /* webpackChunkName: "my-appointments" */ "../views/patitent/MyAppointmentsView.vue"
+      ),
+    meta: { requiresAuth: true, role: "ROLE_PATIENT" },
+  },
+  {
+    path: "/new-appointments",
+    name: "new-appointments",
+    component: () =>
+      import(
+        /* webpackChunkName: "new-appointments" */ "../views/patitent/NewAppointmentView.vue"
+      ),
+    meta: { requiresAuth: true, role: "ROLE_PATIENT" },
   },
 ];
 

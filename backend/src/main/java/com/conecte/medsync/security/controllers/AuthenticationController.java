@@ -5,6 +5,8 @@ import com.conecte.medsync.dtos.requests.RegisterRequest;
 import com.conecte.medsync.dtos.responses.LoginResponse;
 import com.conecte.medsync.models.user.UserModel;
 import com.conecte.medsync.security.services.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Login", description = "Médico/Paciente realiza o login no sistema")
+    @ApiResponse(responseCode = "200", description = "Login feito com sucesso!")
     public ResponseEntity<LoginResponse> Login(
             @RequestBody @Valid AuthenticationRequest authenticationRequest){
         LoginResponse loginResponse = authenticationService.Login(authenticationRequest);
@@ -36,6 +40,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Operation(summary = "Registrar", description = "Usuário realiza o cadastro no sistema")
+    @ApiResponse(responseCode = "201", description = "Cadastro feito com sucesso!")
     public ResponseEntity<Void> Register(@RequestBody @Valid RegisterRequest registerRequest){
         UserModel user = authenticationService.Register(registerRequest);
         URI uri = ServletUriComponentsBuilder
