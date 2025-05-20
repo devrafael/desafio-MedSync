@@ -3,8 +3,8 @@
     <input type="text" v-model="email" placeholder="Email" class="form-control"/>
     <input type="password" v-model="password" placeholder="Senha" class="form-control"/>
     <div class="btn-container">
-      <button type="submit">Login</button>
-      <button type="button">Cadastrar</button>
+      <button type="submit"><i class="bi bi-box-arrow-in-right"></i> Login</button>
+      <button type="button" @click="Register"><i class="bi bi-check-circle"></i> Cadastrar</button>
     </div>
   </form>
 </template>
@@ -49,15 +49,19 @@ const handleLogin = async () => {
     alert("Erro ao efetuar o login");
   }
 };
-
+function Register() {
+  router.push("/register");
+}
 </script>
 
 <style scoped>
+
 form{
   display: flex;
   flex-direction: column;
   width: 80%;
   margin: 0 auto;
+  margin-top: 50px;
   
 }
 
@@ -85,10 +89,10 @@ button {
   flex: 1;
   text-decoration: none;
   align-content: center;
-   display: flex;
-   flex-direction: row;
-  align-items: center;   
-  justify-content: center; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 button:hover{

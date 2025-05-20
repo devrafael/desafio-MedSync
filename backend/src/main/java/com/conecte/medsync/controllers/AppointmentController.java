@@ -1,11 +1,12 @@
 package com.conecte.medsync.controllers;
 
 import com.conecte.medsync.dtos.requests.AppointmentRequest;
-import com.conecte.medsync.dtos.responses.AppointmentDateTimeResponse;
 import com.conecte.medsync.dtos.responses.AppointmentResponse;
+import com.conecte.medsync.security.config.SecurityConfig;
 import com.conecte.medsync.services.AppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import java.util.UUID;
 @RequestMapping("/appointment")
 @Tag(name = "AppointmentController",
         description = "Controller para o agendamento de consultas médicas")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class AppointmentController {
 
     private final AppointmentService appointmentService;

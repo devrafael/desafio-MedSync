@@ -16,6 +16,9 @@ import FormLoginComponent from '../components/FormLoginComponent.vue'
 <style scoped>
 h1{
   margin-bottom: 30px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+
 }
 .page-wrapper {
   min-height: 100vh;            
@@ -29,10 +32,13 @@ h1{
   background-color: white;
   padding: 30px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  width: 60%;
+  width: 100%;
   max-width: 500px;            
   display: flex;
+  justify-content: center; 
   flex-direction: column;
+  height: 500px;
+       
 }
 
 

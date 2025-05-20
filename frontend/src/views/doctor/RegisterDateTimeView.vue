@@ -48,7 +48,7 @@ const submitSchedule = async () => {
       date: date.value,
       time: time.value
     };
-    const response = await axios.post(`${urlBase}/${endpoint}`, payload);
+    await axios.post(`${urlBase}/${endpoint}`, payload);
     alert('Horário cadastrado com sucesso!');
   } catch (error) {
     alert('Erro ao cadastrar horário!');
@@ -104,7 +104,7 @@ a, .btn-save{
   color: white;
   background-color: var(--secondary);
   border-radius: 5px;
-  width: 100px;
+  min-width: 100px;
   height: 35px;
   font-size: 18px;
   cursor: pointer;
@@ -121,15 +121,10 @@ a:hover{
     background-color: var(--primary);
 }
 
-
-@media (max-width: 480px) {
+@media (max-width: 350px) {
   .btn-container {
     flex-direction: column;
-    align-items: stretch;
-  }
-
-  button {
-    width: 100%;
   }
 }
+
 </style>
