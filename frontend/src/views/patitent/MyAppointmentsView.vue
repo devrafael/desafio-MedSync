@@ -1,10 +1,14 @@
 <template>
-  <TablePatientComponent
-    :thead="['Data da Consulta', 'Horário', 'Doutor', 'Agendada em', 'Status']"
-    :tbody="listAppointments"
-    title="Minhas Consultas"
-    :routeLink="'/main/patient'"
-  ></TablePatientComponent>
+  <div class="table-wrapper">
+    <div class="table-container">
+      <TablePatientComponent
+        :thead="['Data da Consulta', 'Horário', 'Doutor', 'Agendada em', 'Status']"
+        :tbody="listAppointments"
+        title="Minhas Consultas"
+        :routeLink="'/main/patient'"
+      ></TablePatientComponent>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -25,6 +29,7 @@ const listAppointments = ref([]);
 onMounted(async () => {
   try {
     const response = await axios.get(`${urlBase}/${endpoint}/${patientId}`);
+
     const formatDateForVisualization = (isoDateString) => {
       const [year, month, day] = isoDateString.split("T")[0].split("-");
       return `${day}/${month}/${year}`;
@@ -55,7 +60,23 @@ onMounted(async () => {
 });
 
 
-
 </script>
 
 
+<style scoped>
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--background);
+}
+
+.table-container {
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+</style>

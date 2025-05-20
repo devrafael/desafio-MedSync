@@ -1,20 +1,25 @@
+
 <template>
-  <TableDoctorComponent
-    :thead="['Data', 'Horário', 'Editar', 'Excluir']"
-    :tbody="formattedSchedule"
-    title="Horários Disponíveis"
-    :routeLink="'/main/doctor'"
-    @edit-item="handleEdit"
-    @delete-item="handleDelete"
-  />
+  <div class="table-wrapper">
+    <div class="table-container">
+      <TableDoctorComponent
+        :thead="['Data', 'Horário', 'Editar', 'Excluir']"
+        :tbody="formattedSchedule"
+        title="Horários Disponíveis"
+        :routeLink="'/main/doctor'"
+        @edit-item="handleEdit"
+        @delete-item="handleDelete"
+      />
+    </div>
+  </div>
 </template>
+
 <script setup>
 import TableDoctorComponent from "@/components/doctor/TableDoctorComponent.vue";
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import {jwtDecode} from "jwt-decode";
-
+import { jwtDecode } from "jwt-decode";
 
 const token = localStorage.getItem('token')
 const decoded = jwtDecode(token);
@@ -23,11 +28,9 @@ const router = useRouter()
 
 const urlBase = process.env.VUE_APP_URL_BASE;
 const endpoint = "schedule?doctor=";
-const doctorName = decoded.fullName;
 const doctorId = decoded.userId;
 
 const listSchedule = ref([]);
-
 const formattedSchedule = ref([]);
 
 onMounted(async () => {
@@ -36,7 +39,6 @@ onMounted(async () => {
       `${urlBase}/${endpoint}${encodeURIComponent(doctorId)}`
     );
 
-    console.log(response.data)
     listSchedule.value = response.data.filter(item => item.aviability === true);
 
     const formatDateForVisualization = (isoDateString) => {
@@ -76,10 +78,25 @@ async function handleDelete(index) {
       await axios.delete(`${urlBase}/schedule/${id}`);
       listSchedule.value.splice(index, 1);
       formattedSchedule.value.splice(index, 1);
-      alert('Horário excluido com sucesso!')
+      alert('Horário excluído com sucesso!');
     } catch (error) {
       console.error('Erro ao excluir o horário:', error);
     }
   }
 }
 </script>
+
+<style scoped>
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  box-sizing: border-box;
+}
+
+.table-container {
+  width: 100%;
+  max-width: 1200px;
+}
+</style>

@@ -76,6 +76,8 @@ A interface estará disponível em `http://localhost:3000` (porta padrão)
    senha: paciente
 }
 
+Observação: Caso queira realizar login simultâneo (Médico e Paciente), utilize navegadores diferentes.
+
 ### 📝 Cadastro de usuário
 
 Apesar do sistema já possuir 2 usuários cadastrados (1 médico e 1 paciente), é possível realizar o cadastro no sistema. 

@@ -56,6 +56,9 @@
 <script setup>
 import axios from "axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const fullName = ref("");
 const email = ref("");
@@ -76,6 +79,7 @@ const handleRegister = async () => {
 
     await axios.post(`${urlBase}/${endpoint}`, payload);
     alert("Usuário cadastrado com sucesso!");
+    router.push("/login");
   } catch (error) {
     console.error("Erro no cadastro:", error.response?.data || error.message);
     alert("Erro ao cadastrar usuário!");

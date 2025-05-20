@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,25 +55,23 @@ public class AppointmentService {
     public Set<AppointmentResponse> getAllAppointments(String doctor) {
         List<AppointmentModel> appointments = appointmentRepository.findByAppointmentsByDoctor(doctor);
         return appointments.stream()
+                .sorted(Comparator
+                        .comparing((AppointmentModel a) -> a.getAppointmentDateTime().getDate())
+                        .thenComparing(a -> a.getAppointmentDateTime().getTime()))
                 .map(appointmentMapper::convertToResponse)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<AppointmentResponse> getAllPatientAppointments(String patient){
         List<AppointmentModel> appointments = appointmentRepository.findByPatientUserId(patient);
         return appointments.stream()
+                .sorted(Comparator
+                        .comparing((AppointmentModel a) -> a.getAppointmentDateTime().getDate())
+                        .thenComparing(a -> a.getAppointmentDateTime().getTime()))
                 .map(appointmentMapper::convertToResponse)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-
-    public List<AppointmentResponse> getAllAppointmentsByStatus(Boolean status, String patient){
-        List<AppointmentModel> appointmentResponseListByStatus = appointmentRepository
-                .findByCompletedAndPatient(status, patient);
-        return appointmentResponseListByStatus.stream()
-                .map(appointmentMapper::convertToResponse)
-                .collect(Collectors.toList());
-    }
 
     public void finishAppointment(UUID appointmentId) {
         AppointmentModel appointmentRegistred = appointmentRepository.findById(appointmentId)

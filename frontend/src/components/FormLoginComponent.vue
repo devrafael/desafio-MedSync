@@ -34,7 +34,7 @@ const handleLogin = async () => {
 
     const decoded = jwtDecode(token);
     
-    const roles = decoded.roles || [];
+    const roles = decoded.roles;
 
     if (roles.includes("ROLE_DOCTOR")) {
       router.push("/main/doctor");

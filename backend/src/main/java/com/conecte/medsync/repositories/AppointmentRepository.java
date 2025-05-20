@@ -12,23 +12,13 @@ import java.util.UUID;
 @Repository
 public interface AppointmentRepository extends JpaRepository<AppointmentModel, UUID> {
 
-    @Query(
-            """
-            SELECT a
-            FROM AppointmentModel a
-            WHERE a.appointmentCompleted = :completed
-            AND TRIM(LOWER(a.patient)) = TRIM(LOWER(:patient))
-            """
-    )
-    List<AppointmentModel> findByCompletedAndPatient(
-            @Param("completed") boolean completed,
-            @Param("patient") String patient);
 
     @Query("""
     SELECT a
     FROM AppointmentModel a
     JOIN a.appointmentDateTime ad
     WHERE TRIM(LOWER(ad.doctor)) = TRIM(LOWER(:doctor))
+    ORDER BY a.appointmentDateTime.date ASC , a.appointmentDateTime.time ASC
 """)
     List<AppointmentModel> findByAppointmentsByDoctor(@Param("doctor") String doctor);
 

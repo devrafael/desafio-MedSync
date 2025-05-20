@@ -1,4 +1,11 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
+import { jwtDecode } from "jwt-decode";
+import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -16,7 +23,9 @@ const routes: Array<RouteRecordRaw> = [
     path: "/register",
     name: "register",
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/RegisterUserView.vue"),
+      import(
+        /* webpackChunkName: "register" */ "../views/RegisterUserView.vue"
+      ),
   },
   {
     path: "/main/doctor",
@@ -25,6 +34,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "mainDoctor" */ "../views/doctor/DoctorMainView.vue"
       ),
+    meta: { requiresAuth: true, role: "DOCTOR" },
   },
   {
     path: "/schedule",
@@ -33,6 +43,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "schedule" */ "../views/doctor/RegisterDateTimeView.vue"
       ),
+    meta: { requiresAuth: true, role: "DOCTOR" },
   },
   {
     path: "/listSchedule",
@@ -41,6 +52,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "listSchedule" */ "../views/doctor/ListDateTimeView.vue"
       ),
+    meta: { requiresAuth: true, role: "DOCTOR" },
   },
   {
     path: "/appointments",
@@ -49,6 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "appointments" */ "../views/doctor/ScheduledAppointmentsView.vue"
       ),
+    meta: { requiresAuth: true, role: "DOCTOR" },
   },
   {
     path: "/main/patient",
@@ -57,6 +70,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "/main/patient" */ "../views/patitent/PatitentMainView.vue"
       ),
+    meta: { requiresAuth: true, role: "PATIENT" },
   },
   {
     path: "/my-appointments",
@@ -65,6 +79,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "my-appointments" */ "../views/patitent/MyAppointmentsView.vue"
       ),
+    meta: { requiresAuth: true, role: "PATIENT" },
   },
   {
     path: "/new-appointments",
@@ -73,6 +88,7 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "new-appointments" */ "../views/patitent/NewAppointmentView.vue"
       ),
+    meta: { requiresAuth: true, role: "PATIENT" },
   },
   {
     path: "/edit/:id",
@@ -82,12 +98,58 @@ const routes: Array<RouteRecordRaw> = [
       import(
         /* webpackChunkName: "/edit" */ "../views/doctor/UpdateDateTimeView.vue"
       ),
+    meta: { requiresAuth: true, role: "DOCTOR" },
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
-})
+  routes,
+});
 
-export default router
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
+    const token = localStorage.getItem("token");
+    const requiresAuth = to.meta.requiresAuth as boolean | undefined;
+    const expectedRole = to.meta.role as string | undefined;
+
+    if (!requiresAuth) {
+      return next();
+    }
+
+    if (!token) {
+      if (to.path !== "/login") {
+        return next("/login");
+      }
+      return next();
+    }
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const roles: string[] = decoded.roles || [];
+
+      if (!roles.length || (expectedRole && !roles.includes(expectedRole))) {
+        const redirectPath = roles.includes("ROLE_DOCTOR")
+          ? "/main/doctor"
+          : "/main/patient";
+
+        if (to.path !== redirectPath) {
+          return next(redirectPath);
+        }
+      }
+    } catch (e) {
+      console.error("Erro ao decodificar token:", e);
+      if (to.path !== "/login") {
+        return next("/login");
+      }
+    }
+
+    return next();
+  }
+);
+
+export default router;

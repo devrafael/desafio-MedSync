@@ -1,10 +1,16 @@
 <template>
-    <header class="header p-3 mb-4">
-        <h1><i class="bi bi-person"></i> Painel do Paciente</h1>
-        <a class="btn btn-logout" @click="logout">
-            <i class="bi bi-box-arrow-left"></i> Sair
-        </a>
-    </header>
+  <header class="header py-3 mb-4">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <h1 class="h4 m-0 text-white d-flex align-items-center gap-2">
+          <i class="bi bi-person"></i> Painel do Paciente
+        </h1>
+        <button class="btn btn-light d-flex align-items-center gap-2 mt-2 mt-md-0" @click="logout">
+          <i class="bi bi-box-arrow-left"></i> Sair
+        </button>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script setup>
@@ -12,7 +18,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const logout = () => {
-  localStorage.removeItem('token')
+  localStorage.removeItem('token');
   router.push('/login');
 };
 </script>
@@ -20,26 +26,15 @@ const logout = () => {
 <style scoped>
 .header {
   background-color: var(--primary);
-  color: white;
-  position: relative;
 }
 
-.btn-logout {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+.btn-light {
   background-color: var(--background);
-  border: 1px solid var(--background);
-  padding: 5px 15px;
-  border-radius: 5px;
+  border-color: var(--background);
   color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
-.btn-logout:hover {
+.btn-light:hover {
   background-color: var(--primary);
-  color:var(--background)
+  color: var(--background);
 }
 </style>

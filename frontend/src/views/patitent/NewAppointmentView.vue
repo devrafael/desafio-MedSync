@@ -45,7 +45,7 @@
 
     <div class="btn-container mt-4">
       <BackButtonComponent :routeLink="'/main/patient'" />
-      <button type="submit" class="btn btn-primary ms-2">
+      <button type="submit" class="btn btn-save ">
         <i class="bi bi-save"></i> Agendar
       </button>
     </div>
@@ -193,16 +193,15 @@ form {
   justify-content: space-evenly;
   gap: 10px;
   margin-top: 10px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 
-a,
-button {
+a, .btn-save {
   border: none;
   color: white;
   background-color: var(--secondary);
   border-radius: 5px;
-  width: 100px;
+  min-width: 100px;
   height: 35px;
   font-size: 18px;
   cursor: pointer;
@@ -219,14 +218,9 @@ a:hover {
   background-color: var(--primary);
 }
 
-@media (max-width: 480px) {
-  .btn-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
 
-  button {
-    width: 100%;
-  }
+a:hover {
+  background-color: var(--primary);
 }
+
 </style>

@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +29,6 @@ public class AppointmentDateTimeService {
         this.appointmentDateTimeUpdateMapper = appointmentDateTimeUpdateMapper;
     }
 
-    //Pendencias: Associar usuario autenticado (doutor) com os horários
     public AppointmentDateTimeResponse createAppointmentSchedule(AppointmentDateTimeRequest appointmentScheduleRequest) {
         AppointmentDateTimeModel newAppointmentDateTime = appointmentDateTimeMapper.convertToModel(appointmentScheduleRequest);
         newAppointmentDateTime.setAviability(true);
@@ -61,7 +57,7 @@ public class AppointmentDateTimeService {
         List<AppointmentDateTimeModel> appointmentsDateTime = appointmentDateTimeRepository.findDateTimeByDoctorId(doctorId);
         return appointmentsDateTime.stream()
                 .map(appointmentDateTimeMapper::convertToResponse)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
 
@@ -95,10 +91,6 @@ public class AppointmentDateTimeService {
 
     }
 
-    public AppointmentDateTimeModel getAppointmentDateTimeById(UUID appointmentDateTimeId){
-        return appointmentDateTimeRepository.findById(appointmentDateTimeId).orElseThrow(() ->
-                new DateTimeRegistredException("Schedule with the specified ID was not found. ID: " + appointmentDateTimeId));
-    }
 
 
 

@@ -1,11 +1,13 @@
 <template>
-  <TableComponent
-    :thead="['Data da Consulta', 'Horário', 'Paciente', 'Agendada em', 'Ação']"
-    :tbody="listAppointments"
-    title="Consultas Agendadas"
-    :routeLink="'/main/doctor'"
-    @finish-item="handleFinish"
-  ></TableComponent>
+  <div class="table-wrapper">
+    <TableComponent
+      :thead="['Data da Consulta', 'Horário', 'Paciente', 'Agendada em', 'Ação']"
+      :tbody="listAppointments"
+      title="Consultas Agendadas"
+      :routeLink="'/main/doctor'"
+      @finish-item="handleFinish"
+    ></TableComponent>
+  </div>
 </template>
 
 <script setup>
@@ -29,6 +31,7 @@ onMounted(async () => {
  
   try {
     const response = await axios.get(`${urlBase}/${endpoint}${doctorId}`);
+
     const allAppointments = response.data;
     const filtered = allAppointments.filter(item => item.appointmentCompleted === false);
     originalAppointments.value = filtered;
@@ -75,4 +78,13 @@ async function handleFinish(index) {
   }
 }
 
-</script>
+</script> 
+<style scoped>
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  box-sizing: border-box;
+}
+</style>

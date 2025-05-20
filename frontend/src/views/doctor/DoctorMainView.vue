@@ -33,6 +33,6 @@
 </template>
 
 <script setup>
-import HeaderMainComponent from "../../components/doctor/HeaderMainComponent.vue";
+import HeaderMainComponent from "../../components/doctor/HeaderMainDcotorComponent.vue";
 import CardMainComponent from "../../components/CardMainComponent.vue";
 </script>

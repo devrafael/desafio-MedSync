@@ -32,12 +32,14 @@ h1{
   background-color: white;
   padding: 30px;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  width: 100%;
+  width: 90%;
   max-width: 500px;            
   display: flex;
   justify-content: center; 
   flex-direction: column;
   height: 500px;
+  border-radius: 10px;
+
        
 }
 
