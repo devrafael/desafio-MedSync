@@ -23,12 +23,14 @@ O **MedSync** é um sistema integrado de agendamento de consultas médicas, dese
 ## 🔧 Configuração Local do projeto
 
 ### 🧾 Pré-requisitos
-- **Java:** JDK 11 ou superior  
-- **Node.js:** versão 16 ou superior  
-- **Docker:** Docker Terminal ou Docker Desktop 
-- **Ferramentas:** Maven, npm/Yarn, Postman (opcional)
-- **IDE's:** Visual Studio Code (recomendado)
-- **Plugins VS Code (opcional):** Spring Boot Tools (para inicialização)
+- **Java:** JDK 11 ou superior;
+- **Node.js:** versão 16 ou superior; 
+- **Ferramentas:** Maven, npm/Yarn, Postman (opcional);
+- **IDE's:** Visual Studio Code (recomendado);
+- **Plugins VS Code (opcional):** Spring Boot Tools (para inicialização);
+- **Docker**;
+- **Maven**: versão 3.8+ (Para empacotar o projeto)
+- **WSL 2:** Apenas se utilizar Windows, será necessário instalar uma distribuição Linux (ex.: Ubuntu) e instalar o Docker dentro do Ubuntu através do WSL 2;
 
 
 ### 🔑 Configuração .env
@@ -39,10 +41,26 @@ Apesar de não ser recomendável publicar as variáveis de ambiente (arquivo .en
 Abra um diretório no terminal, copie e cole:
 ```bash
 git clone https://github.com/devrafael/desafio-tecnico-conecte.git
+```
+Acesse a pasta do backend via terminal
+```
 cd desafio-tecnico-conecte/backend
-docker-compose up --build
+```
+Empacote o projeto
+```
+mvn clean package -DskipTests
+```
+Depois de empacotado, copie e cole:
+```
+docker-compose up --build -d
+```
+Após terminado o processo de build, retorne para o diretório principal e acesse a pasta do frontend:
+```
 cd ..
 cd frontend
+```
+Por fim, copie e cole esses dois comandos:
+```
 npm install
 npm run serve
 ```
