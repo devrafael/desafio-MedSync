@@ -2,7 +2,6 @@ package com.conecte.medsync.models;
 
 import com.conecte.medsync.models.user.UserModel;
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,7 +12,6 @@ public class AppointmentModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Setter(AccessLevel.NONE)
     private UUID appointmentId;
 
     @OneToOne(cascade = CascadeType.ALL)

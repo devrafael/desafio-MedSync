@@ -2,8 +2,7 @@ package com.conecte.medsync.models;
 
 import com.conecte.medsync.models.user.UserModel;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Setter;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +13,6 @@ public class AppointmentDateTimeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Setter(AccessLevel.NONE)
     private UUID appointmentDateTimeId;
     private LocalDate date;
     private LocalTime time;
