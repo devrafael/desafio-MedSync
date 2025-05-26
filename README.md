@@ -7,7 +7,8 @@ O **MedSync** é um sistema integrado de agendamento de consultas médicas, dese
 - **Backend:** Java 17, Spring Boot 3
 - **Frontend:** JavaScript, Vue 3, Bootstrap 5.3.6
 - **Banco de Dados:** PostgreSQL 17
-- **Outros:** Maven, npm, Swagger
+- **Infraestrutura:** Docker
+- **Outros:** Maven, npm, Swagger, MapStruct
 
 ## ⚙️ Funcionalidades Principais
 
@@ -24,43 +25,24 @@ O **MedSync** é um sistema integrado de agendamento de consultas médicas, dese
 ### 🧾 Pré-requisitos
 - **Java:** JDK 11 ou superior  
 - **Node.js:** versão 16 ou superior  
-- **PostgreSQL:** versão 10 ou superior  
+- **Docker:** Docker Terminal ou Docker Desktop 
 - **Ferramentas:** Maven, npm/Yarn, Postman (opcional)
 - **IDE's:** Visual Studio Code (recomendado)
 - **Plugins VS Code (opcional):** Spring Boot Tools (para inicialização)
 
 
-### 🗄️ Configuração do Banco de Dados
-1. Abra o PgAdmin4 (PostgreSQL).
-2. Clique com o botão direito encima do servidor, e clique em propriedades (Properties) e altere a porta para 5433.
-3. Acesse o servidor do PostgreSQL e crie um novo banco de dados (Databases → Create → Database).
-4. Nomeie o banco de dados como "medsyncdb".
-5. Na aba "Connection", guarde o valor do nome do usuário (Username) que foi definido ao criar o servidor no momento da instalação do PostgreSQL
-9. Configure o arquivo `application-dev.properties` do backend:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5433/medsyncdb
-   spring.datasource.username=seu_usuario
-   spring.datasource.password=sua_senha
-   ```
-
 ### 🔑 Configuração .env
 Apesar de não ser recomendável publicar as variáveis de ambiente (arquivo .env) no repositório remoto, para maior facilidade, o backend do projeto possui um arquivo chamado .env, onde se encontra o valor da chave secreta para criação do JWT.
 
 
-### 📂 Executando o Backend
+### 📂 Executando o projeto
 Abra um diretório no terminal, copie e cole:
 ```bash
 git clone https://github.com/devrafael/desafio-tecnico-conecte.git
 cd desafio-tecnico-conecte/backend
-mvn clean install
-mvn spring-boot:run
-```
-A API estará disponível em `http://localhost:8080`.
-
-### 📂 Executando o Frontend
-Abra um diretório no terminal, copie e cole:
-```bash
-cd desafio-tecnico-conecte/frontend
+docker-compose up --build
+cd ..
+cd frontend
 npm install
 npm run serve
 ```
