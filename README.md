@@ -1,5 +1,24 @@
 # 🏥 MedSync - Sistema de Agendamento Médico
 
+## 📑 Sumário
+
+- [🏥 MedSync - Sistema de Agendamento Médico](#-medsync---sistema-de-agendamento-médico)
+- [💡 Descrição Geral do Sistema](#-descrição-geral-do-sistema)
+- [💻 Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [⚙️ Funcionalidades Principais](#-funcionalidades-principais)
+  - [👨‍⚕️ Médico](#-médico)
+  - [👩‍⚕️ Paciente](#-paciente)
+- [🔧 Configuração Local do projeto](#-configuração-local-do-projeto)
+  - [🧾 Pré-requisitos](#-pré-requisitos)
+  - [🔑 Configuração .env](#-configuração-env)
+  - [📂 Executando o projeto](#-executando-o-projeto)
+  - [📝 Login](#-login)
+  - [📝 Cadastro de usuário](#-cadastro-de-usuário)
+- [🔍 Endpoints](#-endpoints)
+- [✨ Considerações](#-considerações)
+  - [🔐 Segurança](#-segurança)
+  - [🖼️ Usabilidade](#-usabilidade)
+
 ## 💡 Descrição Geral do Sistema
 O **MedSync** é um sistema integrado de agendamento de consultas médicas, desenvolvido para facilitar a comunicação entre médicos e pacientes. O sistema permite que pacientes visualizem médicos disponíveis, agendem novas consultas e acompanhem o histórico de seus agendamentos. Já os médicos conseguem gerenciar sua agenda.
 
@@ -20,7 +39,7 @@ O **MedSync** é um sistema integrado de agendamento de consultas médicas, dese
 - Selecionar médicos e agendar consultas
 - Visualizar histórico de agendamentos (passados e futuros)
 
-## 🔧 Configuração Local do projeto
+## 🔧 Configuração Local do Projeto
 
 ### 🧾 Pré-requisitos
 - **Java:** JDK 11 ou superior;
@@ -28,9 +47,10 @@ O **MedSync** é um sistema integrado de agendamento de consultas médicas, dese
 - **Ferramentas:** Maven, npm/Yarn, Postman (opcional);
 - **IDE's:** Visual Studio Code (recomendado);
 - **Plugins VS Code (opcional):** Spring Boot Tools (para inicialização);
-- **Docker**;
 - **Maven**: versão 3.8+ (Para empacotar o projeto)
-- **WSL 2:** Apenas se utilizar Windows, será necessário instalar uma distribuição Linux (ex.: Ubuntu) e instalar o Docker dentro do Ubuntu através do WSL 2;
+- **Docker**:
+   - **WSL 2 (Windows):** Será necessário instalar uma distribuição Linux (ex.: Ubuntu) e instalar o Docker dentro da distribuição através do WSL 2 (terminal);
+   - **Docker Desktop (Opcional):** Interface gráfica para utilizar o Docker;
 
 
 ### 🔑 Configuração .env
@@ -38,15 +58,21 @@ Apesar de não ser recomendável publicar as variáveis de ambiente (arquivo .en
 
 
 ### 📂 Executando o projeto
-Abra um diretório no terminal, copie e cole:
+O primeiro passo é garantir a iniciaização do serviço do Docker.<br>
+Execute o Docker Desktop e verifique o status dele na barra de tarefas (ícones ocultos no canto inferior direito), ou, caso esteja utilizando Linux (Sistema Operacional / WSL 2 ), utilize este comando: 
+```
+sudo service docker start
+```
+
+Abra um diretório, no terminal, copie e cole:
 ```bash
 git clone https://github.com/devrafael/desafio-tecnico-conecte.git
 ```
-Acesse a pasta do backend via terminal
+Acesse a pasta do backend via terminal:
 ```
 cd desafio-tecnico-conecte/backend
 ```
-Empacote o projeto
+Empacote o projeto com o Maven:
 ```
 mvn clean package -DskipTests
 ```
@@ -59,7 +85,7 @@ Após terminado o processo de build, retorne para o diretório principal e acess
 cd ..
 cd frontend
 ```
-Por fim, copie e cole esses dois comandos:
+Por fim, copie e cole esses dois comandos para inicializar o frontend:
 ```
 npm install
 npm run serve

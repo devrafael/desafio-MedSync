@@ -18,7 +18,7 @@ public class WebConfig {
             CorsConfiguration config = new CorsConfiguration();
 
             config.addAllowedOriginPattern("*");
-            config.addAllowedMethod("*");        
+            config.addAllowedMethod("*");
             config.addAllowedHeader("*");
             config.setAllowCredentials(false);
 
